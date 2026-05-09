@@ -43,19 +43,6 @@ As principais dependências do projeto (definidas no `pom.xml`):
     <artifactId>jackson-databind</artifactId>
 </dependency>
 
-<!-- Banco H2 em memória para testes -->
-<dependency>
-    <groupId>com.h2database</groupId>
-    <artifactId>h2</artifactId>
-    <scope>test</scope>
-</dependency>
-
-<!-- Framework de testes -->
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-test</artifactId>
-    <scope>test</scope>
-</dependency>
 ```
 
 ## Banco de Dados
@@ -193,20 +180,6 @@ Posts:
 curl "http://localhost:8080/posts?userId=1&limit=10&skip=0"
 ```
 
-## Testes
-
-Os testes da API usam H2 em memória por meio de `src/test/resources/application.properties`.
-
-```bash
-./mvnw test
-```
-
-Para rodar um teste específico:
-
-```bash
-./mvnw test -Dtest=UserServiceTests
-```
-
 ## Estrutura do Projeto
 
 ```
@@ -223,11 +196,6 @@ api/
 │   │   │   └── DemoApplication.java        # Classe principal
 │   │   └── resources/
 │   │       └── application.properties      # Configurações da aplicação
-│   └── test/
-│       └── java/com/demoapp/demo/
-│           ├── service/                    # Testes dos Services
-│           │   └── UserServiceTests.java
-│           └── DemoApplicationTests.java   # Testes gerais
 ├── pom.xml                                 # Dependências Maven
 └── README.md                               # Documentação
 ```

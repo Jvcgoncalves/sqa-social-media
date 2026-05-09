@@ -8,7 +8,6 @@ Interface web da aplicação, desenvolvida com Next.js, React e TypeScript.
 - React 19
 - TypeScript
 - Axios
-- Jest e Testing Library
 
 O frontend roda por padrão em `http://localhost:3000` e consome a API em `http://localhost:8080`.
 
@@ -51,26 +50,6 @@ Build de produção:
 npm run build
 npm start
 ```
-
-## Testes
-
-```bash
-npm test
-```
-
-Modo watch:
-
-```bash
-npm run test:watch
-```
-
-Coverage:
-
-```bash
-npm run test:coverage
-```
-
-O Jest está configurado para gerar coverage em `coverage/`. Essa pasta é local e fica fora do Git.
 
 ## Rotas
 
@@ -115,8 +94,6 @@ client/
 │   │       └── index.ts         # Interfaces TypeScript
 │   │
 │   ├── utils/                   # Funções utilitárias
-│   │   ├── tests/               # Testes unitários
-│   │   │   └── email.test.ts
 │   │   ├── email.ts             # Validação de email
 │   │   └── password.ts          # Validação de senha
 │   │
@@ -125,7 +102,6 @@ client/
 │
 ├── .env                         # Variáveis de ambiente (não commitado)
 ├── .gitignore                   # Arquivos ignorados pelo git
-├── jest.config.ts               # Configuração do Jest
 ├── next.config.ts               # Configuração do Next.js
 ├── package.json                 # Dependências e scripts
 └── tsconfig.json                # Configuração do TypeScript
@@ -137,6 +113,3 @@ client/
 - `npm run build`: gera o build de produção.
 - `npm start`: inicia o build de produção.
 - `npm run lint`: executa ESLint.
-- `npm test`: executa os testes.
-- `npm run test:watch`: executa testes em modo watch.
-- `npm run test:coverage`: executa testes com relatório de cobertura.

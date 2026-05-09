@@ -1,6 +1,6 @@
 # SQA Social Media
 
-Projeto educacional de qualidade de software com uma API Spring Boot, um frontend Next.js e testes automatizados na API e no frontend.
+Projeto educacional com uma API Spring Boot e um frontend Next.js.
 
 ## Visão Geral
 
@@ -36,26 +36,10 @@ npm install
 npm run dev
 ```
 
-O frontend usa `NEXT_PUBLIC_API_URL` para definir a URL da API. Exemplo de `.env` em `client/`:
+O frontend usa `NEXT_PUBLIC_BASE_URL` para definir a URL da API. Exemplo de `.env` em `client/`:
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:8080
-```
-
-## Testes
-
-API:
-
-```bash
-cd api
-./mvnw test
-```
-
-Frontend:
-
-```bash
-cd client
-npm test
+NEXT_PUBLIC_BASE_URL=http://localhost:8080
 ```
 
 ## Documentações
