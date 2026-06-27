@@ -8,6 +8,10 @@ describe("PostCard", () => {
     title: "Test post",
     body: "Test post body",
     liked: false,
+    reactions: {
+      likes: 10,
+      dislikes: 2,
+    },
   };
 
   it("renders post content and like button", () => {
@@ -21,6 +25,8 @@ describe("PostCard", () => {
 
     expect(screen.getByText("Test post")).toBeInTheDocument();
     expect(screen.getByText("Test post body")).toBeInTheDocument();
+    expect(screen.getByText("Curtidas: 10")).toBeInTheDocument();
+    expect(screen.getByText("Descurtidas: 2")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /curtir/i })).toBeInTheDocument();
   });
 
