@@ -1,4 +1,4 @@
-import { isPasswordValid } from "@/utils/password";
+import { isPasswordValid } from "../../src/utils/password";
 
 describe("isPasswordValid", () => {
   it("accepts an 8-character strong password", () => {

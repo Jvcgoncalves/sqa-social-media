@@ -1,9 +1,9 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import LikedPosts from "@/app/auth/liked/page";
-import ResetPassword from "@/app/reset-password/page";
-import { useAuth } from "../contexts/AuthContext";
-import { authService } from "../service/auth/auth";
+import LikedPosts from "../../src/app/auth/liked/page";
+import ResetPassword from "../../src/app/reset-password/page";
+import { useAuth } from "../../src/contexts/AuthContext";
+import { authService } from "../../src/service/auth/auth";
 
 const mockPush = jest.fn();
 
@@ -13,11 +13,11 @@ jest.mock("next/navigation", () => ({
   }),
 }));
 
-jest.mock("../contexts/AuthContext", () => ({
+jest.mock("../../src/contexts/AuthContext", () => ({
   useAuth: jest.fn(),
 }));
 
-jest.mock("../service/auth/auth", () => ({
+jest.mock("../../src/service/auth/auth", () => ({
   authService: {
     resetPassword: jest.fn(),
   },

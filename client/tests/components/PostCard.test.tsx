@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import PostCard from "@/components/PostCard";
+import PostCard from "../../src/components/PostCard";
 
 describe("PostCard", () => {
   const post = {

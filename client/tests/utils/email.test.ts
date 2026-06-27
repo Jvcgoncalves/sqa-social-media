@@ -1,4 +1,4 @@
-import { isEmailValid } from "@/utils/email";
+import { isEmailValid } from "../../src/utils/email";
 
 describe("isEmailValid", () => {
   it("accepts a valid email", () => {
