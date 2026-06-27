@@ -22,11 +22,35 @@ export interface ResetPasswordRequest {
   email: string;
 }
 
+export interface PostReactions {
+  likes: number;
+  dislikes: number;
+}
+
 export interface Post {
   id: number;
   title: string;
   body: string;
   liked: boolean;
+  reactions: PostReactions;
+}
+
+export interface GetPostsParams {
+  skip?: number;
+  limit?: number;
+  userId?: number;
+  query?: string;
+  tag?: string;
+}
+
+export interface GetLikedPostsParams {
+  userId: number;
+  limit?: number;
+}
+
+export interface LikePostParams {
+  postId: number;
+  userId: number;
 }
 
 export interface PostsResponse {
@@ -40,4 +64,8 @@ export interface LikedPostsResponse {
   posts: Post[];
   total: number;
   limit: number;
+}
+
+export interface TagsResponse {
+  tags: string[];
 }

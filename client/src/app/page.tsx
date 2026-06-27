@@ -14,13 +14,34 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
+  const [searchText, setSearchText] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTag, setSelectedTag] = useState("");
+  const [tags, setTags] = useState([""]);
   const { user, isAuthenticated, isLoading: isLoadingAuth } = useAuth();
 
   useEffect(() => {
     if (!isLoadingAuth) {
-      loadPosts();
+      loadPosts().catch(() => {
+        setError("Erro ao carregar posts. Tente novamente mais tarde.");
+      });
     }
-  }, [page, isLoadingAuth, isAuthenticated]);
+  }, [page, isLoadingAuth, isAuthenticated, searchQuery, selectedTag]);
+
+  useEffect(() => {
+    loadTags().catch(() => {
+      setTags([]);
+    });
+  }, []);
+
+  async function loadTags() {
+    try {
+      const response = await postsService.getTags();
+      setTags(response.tags);
+    } catch {
+      setTags([]);
+    }
+  }
 
   async function loadPosts() {
     try {
@@ -33,6 +54,8 @@ export default function Home() {
         skip: page * POSTS_PER_PAGE,
         limit: POSTS_PER_PAGE,
         userId: user?.id,
+        query: searchQuery || undefined,
+        tag: selectedTag || undefined,
       });
 
       if (page === 0) {
@@ -42,6 +65,28 @@ export default function Home() {
       }
 
       setHasMore(response.posts.length === POSTS_PER_PAGE);
+    } catch {
+      setError("Erro ao carregar posts. Tente novamente mais tarde.");
+    } finally {
+      setIsLoadingPosts(false);
+    }
+  }
+
+  async function loadFirstPage(query: string, tag: string) {
+    try {
+      setIsLoadingPosts(true);
+      setError(null);
+
+      const response = await postsService.getPosts({
+        skip: 0,
+        limit: 10,
+        userId: user?.id,
+        query: query || undefined,
+        tag: tag || undefined,
+      });
+
+      setPosts(response.posts);
+      setHasMore(response.posts.length === 10);
     } catch {
       setError("Erro ao carregar posts. Tente novamente mais tarde.");
     } finally {
@@ -77,6 +122,17 @@ export default function Home() {
     setPage((prev) => prev + 1);
   }
 
+  function clearFilters() {
+    setSearchText("");
+    setSearchQuery("");
+    setSelectedTag("");
+    setPage(0);
+    setPosts([]);
+    loadFirstPage("", "").catch(() => {
+      setError("Erro ao carregar posts. Tente novamente mais tarde.");
+    });
+  }
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--background)" }}>
       <Header />
@@ -98,6 +154,74 @@ export default function Home() {
         >
           Feed de Posts
         </h1>
+
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            const nextQuery = searchText.trim();
+
+            setSearchQuery(nextQuery);
+            setPage(0);
+            setPosts([]);
+            loadFirstPage(nextQuery, selectedTag).catch(() => {
+              setError("Erro ao carregar posts. Tente novamente mais tarde.");
+            });
+          }}
+          style={{
+            display: "flex",
+            gap: "0.75rem",
+            marginBottom: "1rem",
+            flexWrap: "wrap",
+          }}
+        >
+          <input
+            type="search"
+            value={searchText}
+            onChange={(event) => setSearchText(event.target.value)}
+            placeholder="Buscar posts"
+            style={{
+              flex: "1 1 220px",
+              background: "var(--card-bg)",
+              color: "var(--foreground)",
+              border: "1px solid var(--border)",
+              borderRadius: "0.375rem",
+              padding: "0.75rem 1rem",
+              fontSize: "1rem",
+            }}
+          />
+
+          <select
+            value={selectedTag}
+            onChange={(event) => {
+              setSearchText("");
+              setSearchQuery("");
+              setSelectedTag(event.target.value);
+              setPage(0);
+              setPosts([]);
+            }}
+            style={{
+              flex: "1 1 180px",
+              background: "var(--card-bg)",
+              color: "var(--foreground)",
+              border: "1px solid var(--border)",
+              borderRadius: "0.375rem",
+              padding: "0.75rem 1rem",
+              fontSize: "1rem",
+            }}
+          >
+            <option value="">Todas as tags</option>
+            {tags.filter(Boolean).map((tag) => (
+              <option key={tag} value={tag}>
+                {tag}
+              </option>
+            ))}
+          </select>
+
+          <Button type="submit">Buscar</Button>
+          <Button type="button" variant="outline" onClick={clearFilters}>
+            Limpar
+          </Button>
+        </form>
 
         {error && (
           <div
